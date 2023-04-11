@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\{ProfileController, NoteController};
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +28,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+// ListNotes app routes ::
+
+// Auth middleware allows only logged in users to access a route
+Route::resource("/notes", NoteController::class)->middleware(["auth"]);
+
+require __DIR__ . '/auth.php';
