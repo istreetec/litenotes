@@ -23,3 +23,13 @@ NOTE: Laravel does this for you automatically
 
 - $ sail artisan make:controller NoteController --resource
 
+### Rollback migration
+
+After deleting all the records from a table. Always rollback the migration
+ie. Rollback the last database migration
+
+- $ sail artisan migrate:rollback
+
+Rerun the migration after making changes to it
+
+- $ sail artisan migrate

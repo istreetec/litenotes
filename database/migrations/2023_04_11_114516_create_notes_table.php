@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
 
             // Each Note belongs to a user i.e. A user can have many notes
             // 1 : M relationship USER : NOTE

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Note;
 use Illuminate\View\View;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -53,11 +54,14 @@ class NoteController extends Controller
             'text' => 'required',
         ]);
 
+        $sanitizeText = trim($request->text);
+
         // Save the data
         Note::create([
+            'uuid' => Str::uuid(),
             'user_id' => Auth::id(),
             'title' => $request->title,
-            'text' => $request->text
+            'text' => $sanitizeText
         ]);
 
         // Redirect
@@ -67,12 +71,15 @@ class NoteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id): View
+
+    // TIP: Route Model Binding pattern
+    // inject the actual Note Model's instance into the route
+    public function show(Note $note): View
     {
-        // firstOrFail() redirects to a 404 page if the resource doesn't exist
-        $note = Note::where("id", $id)
-            ->where("user_id", Auth::id())
-            ->firstOrFail();
+        if ($note->user_id != Auth::id()) {
+            // Not the logged in user's note
+            return abort(403);
+        }
 
         return view("notes.show")->with("note", $note);
     }

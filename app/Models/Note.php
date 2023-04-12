@@ -18,4 +18,12 @@ class Note extends Model
 
     // TIP: Don't do this in production
     protected $guarded = [];
+
+
+    // Specify the key to be used to resolve a Model
+    // Useful when using Route Model Binding pattern
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
+    }
 }
