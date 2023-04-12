@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Note;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,16 +15,16 @@ class NoteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): void
+    public function index(): View
     {
         // Get logged in user id
         $userId = Auth::id();
 
         // Fetch the content from the database 
-        $notes = Note::where("user_id", $userId)->get();
+        $notes = Note::where("user_id", $userId)->latest("updated_at")->get();
 
         // Pass the payload to the view to display
-        dd($notes);
+        return view("notes.index")->with("notes", $notes);
     }
 
     /**
