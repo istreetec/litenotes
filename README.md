@@ -15,3 +15,11 @@ Add Breeze's Authentication scaffolding
 ### Run migrations
 
 - $ sail artisan migrate
+
+
+### Create a controller with all the methods needed for CRUD operations
+
+NOTE: Nuxt does this for you automatically
+
+- $ sail artisan make:controller NoteController --resource
+
