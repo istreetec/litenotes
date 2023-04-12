@@ -13,10 +13,13 @@
                     {{-- TIP: All forms using POST, PUT, PATCH and DELETE verbs must use @csrf directive --}}
                     @csrf
 
-                    <x-text-input class="w-full" autocomplete="off" type="text" name="title" placeholder="Title">
+                    <x-text-input field="title" class="w-full" autocomplete="off" type="text" name="title"
+                        placeholder="Title" {{-- prepend with `:` to make it available in the component --}} :value="@old('title')">
                     </x-text-input>
-                    <x-textarea class="w-full mt-6" name="text" placeholder="Start typing here..." cols="30"
-                        rows="10"></x-textarea>
+
+                    <x-textarea field="text" class="w-full mt-6" name="text" placeholder="Start typing here..."
+                        cols="30" rows="10" :value="@old('text')"></x-textarea>
+
                     <x-primary-button class="mt-6">Save Note</x-primary-button>
                 </form>
             </div>
