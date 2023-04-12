@@ -19,7 +19,7 @@ Add Breeze's Authentication scaffolding
 
 ### Create a controller with all the methods needed for CRUD operations
 
-NOTE: Nuxt does this for you automatically
+NOTE: Laravel does this for you automatically
 
 - $ sail artisan make:controller NoteController --resource
 

@@ -21,7 +21,12 @@ class NoteController extends Controller
         $userId = Auth::id();
 
         // Fetch the content from the database 
-        $notes = Note::where("user_id", $userId)->latest("updated_at")->get();
+
+        // Add pagination via Laravel Eloquent
+        $notes = Note::where("user_id", $userId)->latest("updated_at")->paginate(
+            // Items per page
+            2
+        );
 
         // Pass the payload to the view to display
         return view("notes.index")->with("notes", $notes);
