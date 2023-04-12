@@ -7,6 +7,7 @@ use App\Models\Note;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 // see - https://laravel.com/docs/10.x/controllers#actions-handled-by-resource-controller
 
@@ -43,17 +44,37 @@ class NoteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        //
+        // Validate individual form fields
+        // see - https://laravel.com/docs/10.x/validation#available-validation-rules
+        $request->validate([
+            'title' => 'required|max:120',
+            'text' => 'required',
+        ]);
+
+        // Save the data
+        Note::create([
+            'user_id' => Auth::id(),
+            'title' => $request->title,
+            'text' => $request->text
+        ]);
+
+        // Redirect
+        return to_route("notes.index");
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): View
     {
-        //
+        // firstOrFail() redirects to a 404 page if the resource doesn't exist
+        $note = Note::where("id", $id)
+            ->where("user_id", Auth::id())
+            ->firstOrFail();
+
+        return view("notes.show")->with("note", $note);
     }
 
     /**
