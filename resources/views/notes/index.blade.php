@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Notes') }}
         </h2>
     </x-slot>
 
@@ -14,7 +14,8 @@
                         {{ $note->title }}
                     </h2>
                     <p class="mt-2">
-                        {{ $note->text }}
+                        {{-- Display the text as excerpt --}}
+                        {{ Str::limit($note->text, 200) }}
                     </p>
                     <span class="block mt-4 text-sm opacity-70">
                         {{ $note->updated_at->diffForHumans() }}
@@ -23,6 +24,9 @@
             @empty
                 <p>You have no notes yet.</p>
             @endforelse
+
+            {{-- Display pagination --}}
+            {{ $notes->links() }}
         </div>
     </div>
 </x-app-layout>
