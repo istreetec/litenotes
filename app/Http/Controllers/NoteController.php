@@ -87,17 +87,38 @@ class NoteController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Note $note)
     {
-        //
+        $notAuth = $note->user_id != Auth::id();
+        return $notAuth ? abort(403) : view("notes.edit")->with("note", $note);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Note $note): RedirectResponse
     {
-        //
+        // Complete the edit step by updating Model
+
+        // First check whether the note belongs to logged in user
+        if ($note->user_id != Auth::id()) {
+            // Not the logged in user's note
+            return abort(403);
+        }
+
+        // TIP: Always validate first
+        $request->validate([
+            'title' => 'required|max:120',
+            'text' => 'required',
+        ]);
+
+        $note->update([
+            'title' => $request->title,
+            'text' => $request->text,
+        ]);
+
+        // Redirect with update note
+        return to_route("notes.show", $note);
     }
 
     /**

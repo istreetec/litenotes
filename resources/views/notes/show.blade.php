@@ -18,6 +18,8 @@
                         Updated at:
                     </strong> {{ $note->updated_at->diffForHumans() }}
                 </p>
+                {{-- Use Route Model Binding --}}
+                <a href="{{ route('notes.edit', $note) }}" class="btn-link ml-auto">Edit Note</a>
             </div>
 
             <div class="my-6 p-6 bg-white border-b border-gray-200 shadow-sm sm:rounded-lg">
