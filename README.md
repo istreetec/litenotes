@@ -33,3 +33,12 @@ ie. Rollback the last database migration
 Rerun the migration after making changes to it
 
 - $ sail artisan migrate
+
+
+### Relationships
+
+- A post can have many likes
+- A user can have many notes
+- A student can take many subjects
+
+![Relationships Picture](Relationship.png)

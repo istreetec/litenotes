@@ -19,16 +19,12 @@ class NoteController extends Controller
      */
     public function index(): View
     {
-        // Get logged in user id
-        $userId = Auth::id();
+        // Query related Models.
+        // Get Authenticated user's notes
+        // $notes = Auth::user()->notes()->latest("updated_at")->paginate(2);
 
-        // Fetch the content from the database 
-
-        // Add pagination via Laravel Eloquent
-        $notes = Note::where("user_id", $userId)->latest("updated_at")->paginate(
-            // Items per page
-            2
-        );
+        // Using inverse relationship alternative
+        $notes = Note::whereBelongsTo(Auth::user())->latest("updated_at")->paginate(2);
 
         // Pass the payload to the view to display
         return view("notes.index")->with("notes", $notes);
@@ -57,9 +53,10 @@ class NoteController extends Controller
         $sanitizeText = trim($request->text);
 
         // Save the data
-        Note::create([
+        // TIP: Using relationship when creating a note exempts manually setting 
+        // the foreign key
+        Auth::user()->notes()->create([
             'uuid' => Str::uuid(),
-            'user_id' => Auth::id(),
             'title' => $request->title,
             'text' => $sanitizeText
         ]);
@@ -76,8 +73,8 @@ class NoteController extends Controller
     // inject the actual Note Model's instance into the route
     public function show(Note $note): View
     {
-        if ($note->user_id != Auth::id()) {
-            // Not the logged in user's note
+        // Compare Primary Keys of two objects belonging to the same user
+        if (!$note->user->is(Auth::user())) {
             return abort(403);
         }
 
@@ -101,8 +98,7 @@ class NoteController extends Controller
         // Complete the edit step by updating Model
 
         // First check whether the note belongs to logged in user
-        if ($note->user_id != Auth::id()) {
-            // Not the logged in user's note
+        if (!$note->user->is(Auth::user())) {
             return abort(403);
         }
 
@@ -118,14 +114,25 @@ class NoteController extends Controller
         ]);
 
         // Redirect with update note
-        return to_route("notes.show", $note);
+        $message = "Note updated successfully!";
+
+        // Show Flash data to users
+        return to_route("notes.show", $note)->with("success", $message);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Note $note): RedirectResponse
     {
-        //
+        if (!$note->user->is(Auth::user())) {
+            return abort(403);
+        }
+
+        // Nuke the note
+        $note->delete();
+
+        $message = "Note deleted successfully!";
+        return to_route("notes.index")->with("success", $message);
     }
 }
