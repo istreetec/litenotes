@@ -45,4 +45,16 @@ Route::get("/trashed", [TrashedNoteController::class, 'index'])
     ->middleware(["auth"])
     ->name("trashed.index");
 
+// Show a soft deleted note
+Route::get("/trashed/{note}", [TrashedNoteController::class, 'show'])
+    // Only Trashed Notes
+    ->withTrashed()
+    ->middleware(["auth"])
+    ->name("trashed.show");
+
+Route::put("/trashed/{note}", [TrashedNoteController::class, 'update'])
+    ->withTrashed()
+    ->middleware(["auth"])
+    ->name("trashed.update");
+
 require __DIR__ . '/auth.php';
