@@ -47,3 +47,5 @@ Rerun the migration after making changes to it
 ### Add Soft Delete to notes table
 - $ sail artisan make:migration add_soft_delete_to_notes
 
+### Make a Trash controller
+ - $ sail artisan make:controller TrashedNoteController

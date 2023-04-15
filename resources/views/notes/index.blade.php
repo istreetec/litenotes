@@ -1,7 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Notes') }}
+            {{-- Check the route name --}}
+            {{-- NOTE: `__` double underscore is used for language translation. It's optional --}}
+            {{ request()->routeIs('notes.index') ? __('Notes') : __('Trash') }}
         </h2>
     </x-slot>
 
@@ -11,9 +13,11 @@
                 {{ session('success') }}
             </x-alert-success>
 
-            <a href="{{ route('notes.create') }}" class="btn-link btn-lg mb-2">
-                + New Note
-            </a>
+            @if (request()->routeIs('notes.index'))
+                <a href="{{ route('notes.create') }}" class="btn-link btn-lg mb-2">
+                    + New Note
+                </a>
+            @endif
 
             {{-- use @forelse if there are no notes --}}
             @forelse ($notes as $note)
@@ -31,7 +35,11 @@
                     </span>
                 </div>
             @empty
-                <p>You have no notes yet.</p>
+                @if (request()->routeIs('notes.index'))
+                    <p>You have no notes yet.</p>
+                @else
+                    <p>No items in Trash</p>
+                @endif
             @endforelse
 
             {{-- Display pagination --}}
