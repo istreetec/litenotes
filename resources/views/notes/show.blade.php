@@ -33,7 +33,7 @@
 
                         {{-- Confirm Dialogue --}}
                         <button type="submit" class="btn btn-danger ml-4"
-                            onclick="return confirm('Are you sure you wish to delete this note?')">
+                            onclick="return confirm('Are you sure you wish to move this note to trash?')">
                             Move to Trash
                         </button>
                     </form>
@@ -51,16 +51,16 @@
                     </form>
 
                     {{-- Delete Button --}}
-                    {{-- <form action="{{ route('notes.destroy', $note) }}" method="post">
+                    <form action="{{ route('trashed.destroy', $note) }}" method="post">
                         @method('delete')
-                        @csrf --}}
+                        @csrf
 
                         {{-- Confirm Dialogue --}}
-                        {{-- <button type="submit" class="btn btn-danger ml-4"
-                            onclick="return confirm('Are you sure you wish to delete this note?')">
-                            Move to Trash
-                        </button> --}}
-                    {{-- </form> --}}
+                        <button type="submit" class="btn btn-danger ml-4"
+                            onclick="return confirm('Are you sure you wish to delete this note forever? This action cannot be undone!')">
+                            Delete Forever
+                        </button>
+                    </form>
                 @endif
             </div>
 

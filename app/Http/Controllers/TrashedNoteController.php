@@ -42,4 +42,15 @@ class TrashedNoteController extends Controller
         $message = "Note was restored";
         return to_route("notes.show", $note)->with("success", $message);
     }
+
+    public function destroy(Note $note): RedirectResponse
+    {
+        if (!$note->user->is(Auth::user())) {
+            return abort(403);
+        }
+
+        $note->forceDelete();
+        $message = "Note deleted forever";
+        return to_route("trashed.index", $note)->with("success", $message);
+    }
 }

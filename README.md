@@ -49,3 +49,7 @@ Rerun the migration after making changes to it
 
 ### Make a Trash controller
  - $ sail artisan make:controller TrashedNoteController
+
+
+### This project covers all below Laravel Features
+![Relationships Picture](Relationships.png)
