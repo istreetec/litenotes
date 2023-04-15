@@ -132,7 +132,7 @@ class NoteController extends Controller
         // Nuke the note
         $note->delete();
 
-        $message = "Note deleted successfully!";
+        $message = "Note moved to trash";
         return to_route("notes.index")->with("success", $message);
     }
 }

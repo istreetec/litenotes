@@ -42,3 +42,8 @@ Rerun the migration after making changes to it
 - A student can take many subjects
 
 ![Relationships Picture](Relationship.png)
+
+
+### Add Soft Delete to notes table
+- $ sail artisan make:migration add_soft_delete_to_notes
+
