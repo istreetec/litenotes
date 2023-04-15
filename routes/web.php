@@ -1,7 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{ProfileController, NoteController};
+use App\Http\Controllers\{
+    ProfileController,
+    NoteController,
+    TrashedNoteController
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +35,14 @@ Route::middleware('auth')->group(function () {
 // ListNotes app routes ::
 
 // Auth middleware allows only logged in users to access a route
+// TIP: Laravel takes care of naming all the routes created with resource()
 Route::resource("/notes", NoteController::class)->middleware(["auth"]);
+
+// Trashed Notes Route.
+// Only authenticated users can view their trashed notes
+// Also give the route a name
+Route::get("/trashed", [TrashedNoteController::class, 'index'])
+    ->middleware(["auth"])
+    ->name("trashed.index");
 
 require __DIR__ . '/auth.php';
