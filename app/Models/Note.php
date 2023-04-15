@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\{Model, SoftDeletes};
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Note extends Model
 {
     use HasFactory;
+
+    // Inform the Note Model that it should use soft deletes
+    use SoftDeletes;
 
     // Security::
     // protect against Mass Assignment
