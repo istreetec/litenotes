@@ -7,6 +7,10 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <x-alert-success>
+                {{ session('success') }}
+            </x-alert-success>
+
             <div class="flex">
                 <p class="opacity-70">
                     <strong>
@@ -20,6 +24,16 @@
                 </p>
                 {{-- Use Route Model Binding --}}
                 <a href="{{ route('notes.edit', $note) }}" class="btn-link ml-auto">Edit Note</a>
+
+                {{-- Delete Button --}}
+                <form action="{{ route('notes.destroy', $note) }}" method="post">
+                    @method('delete')
+                    @csrf
+
+                    {{-- Confirm Dialogue --}}
+                    <button type="submit" class="btn btn-danger ml-4"
+                        onclick="return confirm('Are you sure you wish to delete this note?')">Delete Note</button>
+                </form>
             </div>
 
             <div class="my-6 p-6 bg-white border-b border-gray-200 shadow-sm sm:rounded-lg">
